@@ -7,6 +7,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "./ui/dialog.tsx"
+import { Input } from "./ui/input.tsx"
+import { Label } from "./ui/label.tsx"
+import { Button } from "./ui/button.tsx"
 
 const EachAudit = () => {
     return (
@@ -21,13 +24,20 @@ const EachAudit = () => {
                     <button className='border text-gray-950 border-gray-950 hover:bg-gray-950 hover:text-white px-4 py-2 rounded-md dark:border-gray-800 dark:text-gray-50 dark:hover:bg-gray-800 mr-2'>Audit Details</button>
                     <Dialog className=''>
                         <DialogTrigger><button className='bg-gray-950 hover:bg-gray-800 text-white px-4 py-2 rounded-md dark:bg-white dark:text-gray-950 dark:hover:bg-slate-100'>Bid</button></DialogTrigger>
-                        <DialogContent className='dark:bg-blue-500'>
+                        <DialogContent className='bg-gray-100'>
                             <DialogHeader>
-                                <DialogTitle>Are you sure absolutely sure?</DialogTitle>
+                                <DialogTitle>Bid for this Project?</DialogTitle>
                                 <DialogDescription>
-                                    This action cannot be undone. Once a bid is placed, you cannot change it nor withdraw it
+                                    This action cannot be undone. Once a bid is placed, you cannot change nor withdraw it
                                 </DialogDescription>
+
                             </DialogHeader>
+                            {/* TODO: Add if it's ETH or USDC or any token. */}
+                            <div className="flex w-full max-w-lg items-center space-x-2">
+                                <Input type="number" id="price" placeholder="Your Price" />
+                                <Button className='bg-gray-900 text-white' type="submit">Submit</Button>
+                            </div>
+                            
                         </DialogContent>
                     </Dialog>
                 </div>
