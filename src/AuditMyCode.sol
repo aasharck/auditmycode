@@ -12,6 +12,7 @@ contract AuditMyCode {
         uint256 maxBudget;
         address token;
         string info;
+        uint256 sloc;
         mapping(address => uint256) auditorPrice;
         address auditor;
         bool finished;
@@ -22,16 +23,19 @@ contract AuditMyCode {
 
     event AuditRequested(address indexed projectOwner, uint256 projId, uint256 maximumBudget);
     event AuditorHired(address indexed projectOwner, address indexed auditor, uint256 projId, uint256 priceOfAudit);
-    event ProposalSubmitted(address indexed auditor, uint256 projId);
+    event ProposalSubmitted(address indexed auditor, uint256 projId, uint256 price);
+
+    // TODO: Whitelist of address needed. Or maybe not?
 
     // Project call this function to list their project in the marketplace
-    // It accepts the maximum budget, a string with information about the audit
-    function requestAudit(uint256 maxBudget_, string memory info_, address token_) external{
+    // It accepts the maximum budget, a string with information about the audit and token address
+    function requestAudit(uint256 maxBudget_, string memory info_, address token_, uint256 sloc_) external{
         uint256 id = ++projectId;
         projects[id].owner = msg.sender;
         projects[id].maxBudget = maxBudget_;
         projects[id].token = token_;
         projects[id].info = info_;
+        projects[id].sloc = sloc_;
         emit AuditRequested(msg.sender, id, maxBudget_);
     }
 
@@ -42,7 +46,7 @@ contract AuditMyCode {
         require(yourPrice_ > 0, "Price cannot be 0");
         require(projects[projectId_].auditorPrice[msg.sender] <= 0, "Proposal already given for this project");
         projects[projectId_].auditorPrice[msg.sender] = yourPrice_;
-        emit ProposalSubmitted(msg.sender, projectId_);
+        emit ProposalSubmitted(msg.sender, projectId_, yourPrice_);
     }
 
     // if ERC20, approve needs to be called before calling this
