@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Audits from './components/Audits';
 import { Routes, Route } from 'react-router-dom';
 import AuditPage from './AuditPage';
+import RequestAudit from './RequestAudit';
 
 function App() {
   const [darkMode, toggleDarkMode] = useState(false)
@@ -21,6 +22,12 @@ function App() {
           path='/audits/:projectId'
           element={
             <AuditPage />
+          }
+        />
+        <Route
+          path='/request'
+          element={
+            <RequestAudit />
           }
         />
       </Routes>
