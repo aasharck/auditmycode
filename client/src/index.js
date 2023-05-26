@@ -12,6 +12,7 @@ import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum, baseGoerli } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
+import { BrowserRouter } from 'react-router-dom';
 
 const { chains, publicClient } = configureChains(
   [baseGoerli, mainnet, polygon, optimism, arbitrum],
@@ -35,13 +36,15 @@ const wagmiConfig = createConfig({
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <WagmiConfig config={wagmiConfig}>
-    <RainbowKitProvider chains={chains}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </RainbowKitProvider>
-  </WagmiConfig>
+  <BrowserRouter>
+    <WagmiConfig config={wagmiConfig}>
+      <RainbowKitProvider chains={chains}>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </RainbowKitProvider>
+    </WagmiConfig>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
