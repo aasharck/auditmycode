@@ -1,13 +1,43 @@
+import { ethers } from "ethers";
+import { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useAccount, useWalletClient } from 'wagmi';
 import Navbar from './components/Navbar';
 import './App.css';
-import { useState } from 'react';
 import Audits from './components/Audits';
-import { Routes, Route } from 'react-router-dom';
 import AuditPage from './AuditPage';
 import RequestAudit from './RequestAudit';
+import ContractAbi from './abi/AuditMyCode.json'
 
 function App() {
-  const [darkMode, toggleDarkMode] = useState(false)
+  const { address, isDisconnected } = useAccount();
+  const CONTRACTADDRESS = "0x3F352F077Ba0CDf41de470af8021AFF9e1E7Fabb"
+  const [darkMode, toggleDarkMode] = useState(false);
+  const [contract, setContract] = useState();
+  const { data } = useWalletClient();
+
+  useEffect(() => {
+    if(!isDisconnected){
+      loadContract();
+    }
+  },[])
+
+  const loadContract = async () => {
+    try {
+      const abi = ContractAbi.abi;
+      const tx = new ethers.Contract(
+        CONTRACTADDRESS,
+        abi,
+        data
+      )
+      setContract(tx);
+      console.log(await tx.projectId());
+      console.log("Connected to contract")
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className={`h-screen ${darkMode && "dark"}`}>
       <Navbar toggleDarkMode={toggleDarkMode} darkMode={darkMode}/>
