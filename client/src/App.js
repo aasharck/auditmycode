@@ -9,12 +9,12 @@ import AuditPage from './AuditPage';
 import RequestAudit from './RequestAudit';
 import ContractAbi from './abi/AuditMyCode.json'
 
+
 function App() {
   const { address, isDisconnected } = useAccount();
   const CONTRACTADDRESS = "0x3F352F077Ba0CDf41de470af8021AFF9e1E7Fabb"
   const [darkMode, toggleDarkMode] = useState(false);
   const [contract, setContract] = useState();
-  const { data } = useWalletClient();
 
   useEffect(() => {
     if(!isDisconnected){
@@ -24,11 +24,13 @@ function App() {
 
   const loadContract = async () => {
     try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
       const abi = ContractAbi.abi;
       const tx = new ethers.Contract(
         CONTRACTADDRESS,
         abi,
-        data
+        signer
       )
       setContract(tx);
       console.log(await tx.projectId());
